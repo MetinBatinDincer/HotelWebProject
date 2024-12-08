@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="image/favicon.png" type="image/png">
         <title>Royal Hotel</title>
-   
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="vendors/linericon/style.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -51,6 +51,14 @@
             </div>
         </header>
      
+
+
+
+          
+    
+
+
+
         <section class="breadcrumb_area">
             <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
             <div class="container">
@@ -63,57 +71,53 @@
                 </div>
             </div>
         </section>
-     
-        <section class="accomodation_area section_gap">
+
+
+        <section class="graph_area section_gap">
             <div class="container">
                 <div class="section_title text-center">
-                    <h2 class="title_color">Özel Konaklama</h2>
-                    <p>Hepimiz genç ruhlulara ait bir çağda yaşıyoruz. Hayat aşırı derecede hızlanıyor,</p>
+                    <h2 class="title_w">Otel Doluluk Oranı</h2>
+                    <p>Geçmiş aylara göre otel doluluk oranları</p>
                 </div>
-                <div class="row mb_30">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="image/room1.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover">Hemen Al</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4">Double Deluxe Room</h4></a>
-                            <h5>$250<small>/night</small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="image/room2.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover">Hemen Al</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4">Single Deluxe Room</h4></a>
-                            <h5>$200<small>/night</small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="image/room3.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover">Hemen Al</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4">Honeymoon Suit</h4></a>
-                            <h5>$750<small>/night</small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="image/room4.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover">Hemen Al</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4">Economy Double</h4></a>
-                            <h5>$200<small>/night</small></h5>
-                        </div>
-                    </div>
-                </div>
+                <div id="otelGrafik" style="height: 370px; width: 100%;"></div>
             </div>
         </section>
+
+
+        <script>
+            window.onload = function () {
+                var chart = new CanvasJS.Chart("otelGrafik", {
+                    animationEnabled: true,
+                    theme: "light2",
+                    title: {
+                        text: "Aylık Doluluk Oranları"
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 240,
+                        yValueFormatString: "##0.00%",
+                        indexLabel: "{label} {y}",
+                        dataPoints: [
+                            { label: "Ocak", y: 0.7 },
+                            { label: "Şubat", y: 0.6 },
+                            { label: "Mart", y: 0.8 },
+                            { label: "Nisan", y: 0.4 },
+                            { label: "Mayıs", y: 0.9 },
+                            { label: "Haziran", y: 0.5 },
+                            { label: "Temmuz", y: 0.8 },
+                            { label: "Ağustos", y: 0.4 },
+                            { label: "Eylül", y: 0.8 },
+                            { label: "Ekim", y: 0.6 },
+                            { label: "Kasım", y: 0.5 },
+                            { label: "Aralık", y: 0.7 }
+                        ]
+                    }]
+                });
+                chart.render();
+            }
+        </script>
+     
+       
 
         <section class="hotel_booking_area">
             <div class="container">

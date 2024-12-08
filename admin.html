@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .preview {
+            margin-top: 20px;
+        }
+
+        .preview img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .image-list {
+            margin-top: 20px;
+        }
+
+        .image-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .image-item img {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .image-item button {
+            margin-left: auto;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .image-item button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Yemek Resmi Yönetimi</h2>
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="imageTitle">Yemek Adı:</label>
+                <input type="text" id="imageTitle" placeholder="Yemek adını girin">
+            </div>
+            <div class="form-group">
+                <label for="imagePrice">Fiyat (TL):</label>
+                <input type="number" id="imagePrice" placeholder="Fiyatı girin">
+            </div>
+            <div class="form-group">
+                <label for="imageFile">Resim Seç:</label>
+                <input type="file" id="imageFile" accept="image/*">
+            </div>
+            <div class="form-group">
+                <button type="submit">Resmi Yükle</button>
+            </div>
+        </form>
+
+        <div class="form-group">
+            <button type="submit"><a style="color: #fff; text-decoration: none;" href="index.html">Anasayfa</a></button>
+        </div>
+
+        <h2>Resimleri Yönet</h2>
+        <div class="image-list" id="imageList">
+            <!-- Yüklenen resimler buraya listelenecek -->
+        </div>
+        
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const imageFileInput = document.getElementById('imageFile');
+        const imageList = document.getElementById('imageList');
+
+        // Resim yükleme işlemi
+        uploadForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('imageTitle').value;
+            const price = document.getElementById('imagePrice').value;
+            const file = imageFileInput.files[0];
+
+            if (!title || !price || !file) {
+                alert('Lütfen tüm alanları doldurun ve bir resim seçin.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Yeni resim verisini kaydet
+                const newImage = {
+                    title: title,
+                    price: price,
+                    src: e.target.result
+                };
+
+                // LocalStorage'a kaydet
+                const existingImages = JSON.parse(localStorage.getItem('sliderImages')) || [];
+                existingImages.push(newImage);
+                localStorage.setItem('sliderImages', JSON.stringify(existingImages));
+
+                alert('Resim başarıyla yüklendi!');
+                displayImageList();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Resimleri listele ve silme butonunu ekle
+        function displayImageList() {
+            const existingImages = JSON.parse(localStorage.getItem('sliderImages')) || [];
+            imageList.innerHTML = '';
+
+            existingImages.forEach((image, index) => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item';
+
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.title;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Sil';
+                deleteButton.addEventListener('click', function () {
+                    removeImage(index);
+                });
+
+                imageItem.appendChild(img);
+                imageItem.appendChild(deleteButton);
+                imageList.appendChild(imageItem);
+            });
+        }
+
+        // Resim silme işlemi
+        function removeImage(index) {
+            const existingImages = JSON.parse(localStorage.getItem('sliderImages')) || [];
+            existingImages.splice(index, 1);
+            localStorage.setItem('sliderImages', JSON.stringify(existingImages));
+            alert('Resim başarıyla silindi!');
+            displayImageList();
+        }
+
+        // Sayfa yüklendiğinde mevcut resimleri listele
+        document.addEventListener('DOMContentLoaded', displayImageList);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Girişi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Admin Girişi</h2>
+        <form id="loginForm" action="admin.html" method="GET">
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="email" class="form-control" id="username" placeholder="Kullanıcı Adı giriniz" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" class="form-control" id="password" placeholder="Şifre giriniz" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Kontrol edilecek kullanıcı adı ve şifre
+            const correctUsername = 'dincermetin0@gmail.com';
+            const correctPassword = '123456';
+
+            if (username === correctUsername && password === correctPassword) {
+                window.location.href = 'admin.html'; // Giriş doğruysa admin.html sayfasına yönlendir
+            } else {
+                alert('Kullanıcı adı veya şifre yanlış!');
+            }
+        });
+    </script>
+</body>
+
+</html>
